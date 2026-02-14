@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Sachi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Indie+Flower&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffeef2;
+            --heart-color: #ff4d6d;
+            --paper-color: #fff9e6;
+            --wax-color: #c9184a;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-color);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Heart Rain */
+        .heart-fall {
+            position: fixed;
+            top: -10%;
+            user-select: none;
+            z-index: 0;
+            pointer-events: none;
+            animation: fall linear forwards;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* Part 1: Penguin Interaction */
+        #part1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .penguin-box {
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .penguin-box:active { transform: scale(0.9); }
+
+        .instruction {
+            color: #ff758f;
+            font-style: italic;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Part 2: The Envelope Reveal */
+        #part2 {
+            display: none;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        #envelope {
+            margin-top: 20vh;
+            width: 300px;
+            height: 200px;
+            background: #fdfcf0;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transition: transform 0.5s, opacity 0.5s;
+        }
+
+        .wax-seal {
+            width: 60px;
+            height: 60px;
+            background: var(--wax-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            border: 2px solid #a0143c;
+        }
+
+        /* The Letter */
+        .notebook {
+            display: none;
+            background-color: var(--paper-color);
+            width: 95%;
+            max-width: 650px;
+            padding: 50px 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border-radius: 5px;
+            background-image: repeating-linear-gradient(var(--paper-color) 0px, var(--paper-color) 27px, #a0c4ff 28px);
+            line-height: 28px;
+            position: relative;
+            margin-bottom: 50px;
+        }
+
+        .notebook::before {
+            content: '';
+            position: absolute;
+            left: 40px; top: 0; bottom: 0;
+            width: 2px;
+            background-color: #ffadad;
+        }
+
+        .letter-content {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.25rem;
+            color: #2d3436;
+            padding-left: 35px;
+            white-space: pre-wrap;
+        }
+
+        /* Gallery Section */
+        #gallery {
+            display: none;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .gallery-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 10px 10px 30px 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transform: rotate(-2deg);
+            transition: transform 0.3s;
+        }
+
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 5; }
+
+        .polaroid img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        #music-container {
+            position: fixed;
+            top: 20px; right: 20px; z-index: 100;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 15px; border-radius: 50px;
+            display: none;
+        }
+
+        .fade-in { animation: fadeIn 1.5s forwards; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    </style>
+</head>
+<body>
+
+    <div id="music-container">
+        <button onclick="toggleMusic()" id="musicBtn" style="border:none; background:none; cursor:pointer; font-weight: bold; color: #c9184a;">🎵 Play Music</button>
+        <audio id="bgMusic" loop>
+            <source src="music.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <div id="part1">
+        <h1 id="title">Happy Valentine's day, my bayot!</h1>
+        <div id="penguin" class="penguin-box" onclick="petPenguin()">🐧</div>
+        <p class="instruction" id="hint">Tap the bb penguin 3x ples then press heart ples.</p>
+        <p class="instruction" id="hint">Important note: Please lower your volume baka mabigla ka and madamage ears mo, mwa!</p>
+        
+        <button id="heartBtn" style="display:none; background:none; border:none; cursor:pointer; font-size: 100px; color: var(--heart-color); animation: heartbeat 1.2s infinite;" onclick="openEnvelope()">❤</button>
+    </div>
+
+    <div id="part2">
+        <div id="envelope" onclick="breakSeal()">
+            <div class="wax-seal">❤</div>
+        </div>
+
+        <div class="notebook" id="theLetter">
+            <div class="letter-content">Hi, sachi. It really feels weird saying that instead of love. 
+
+I want to start off by telling you how much I appreciate what you've done for me, especially those days na nandito ka and making money for us to be able to do anything that includes money. I saw your efforts. The grind you do for almost 24hrs just to make me happy and have food on our tumtum for every hour because of the snacks we bought every other day. I won't forget the effort that you did for me, and I swore to myself that effort will come back to you, tripled. I also appreciate that whenever we fought that time, you'd come to me and talk to me and pinapaintindi mo talaga sakin what's wrong and how it made you feel hurt despite the struggle you have when opening up what you feel. I saw effort, and a progress to be better. Not just for me, for us, and para rin sa sarili mo.  
+
+I know we're on a break right and you're taking a step back to assess what you want, and it's okay to take your time. We've been through a lot, so much, and we got through of it together. I'm proud of us, always. Thank you for always choosing to be patient with me even though I'm the hardest person you've dealt with HAHAHA. Thank you for being with me and lighting up my day especially those times na nag aaway sila mama. It actually toned down nung nandito ka, and nag aaway sila again nung umalis ka. I hope I was able to do the same thing for you. It breaks my heart to see you're sad and going through a lot and I'm not there with you, and can't do anything. I despise the feeling of it.
+
+I'm sorry for hurting you. You're an amazing person. You deserve all the great things life has to offer, and I'm sorry for making you feel that way. Please, don't leave me :< Stay with me forever and ever na. 
+
+Remember that I'll always be here for you, otay? I'm not really a firm believer like you are, but I wish to God that you'd always possess the gentleness a sad soul ever craves, that you should be the happiest person waddling on this earth, and even if you're not, may you always find the courage to continue just like how you give purpose in me, a fellow penguin who's in the same lifetime with you. I love you always, so so much. You mean everything to me, and no matter what happens, I will always choose you. 
+
+Again, Happy Valentine's day, my love!</div>
+        </div>
+
+        <div id="gallery">
+            <h2 class="gallery-title">I love you, always!</h2>
+            <div class="photo-grid">
+                <div class="polaroid"><img src="photo1.jpg" alt="Memory 1"></div>
+                <div class="polaroid"><img src="photo2.jpg" alt="Memory 2"></div>
+                <div class="polaroid"><img src="photo3.jpg" alt="Memory 3"></div>
+            </div>
+            <p style="color:white; font-family: 'Dancing Script'; font-size: 1.5rem; margin-top: 40px;">To forever and ever with you.</p>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('bgMusic');
+        music.volume = 0.65;
+
+        let taps = 0;
+        function petPenguin() {
+            taps++;
+            const penguin = document.getElementById('penguin');
+            if (taps < 3) {
+                penguin.style.transform = `scale(1.1) rotate(${taps % 2 === 0 ? 10 : -10}deg)`;
+            } else {
+                penguin.style.display = 'none';
+                document.getElementById('hint').style.display = 'none';
+                document.getElementById('heartBtn').style.display = 'block';
+            }
+        }
+
+        function openEnvelope() {
+            document.getElementById('part1').style.display = 'none';
+            document.getElementById('part2').style.display = 'flex';
+            document.getElementById('music-container').style.display = 'block';
+            music.play().catch(() => {});
+        }
+
+        function breakSeal() {
+            document.getElementById('envelope').style.opacity = "0";
+            setTimeout(() => {
+                document.getElementById('envelope').style.display = 'none';
+                document.getElementById('theLetter').style.display = 'block';
+                document.getElementById('gallery').style.display = 'block';
+                document.getElementById('theLetter').classList.add('fade-in');
+                document.getElementById('gallery').classList.add('fade-in');
+            }, 500);
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart-fall');
+            heart.innerHTML = '❤';
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 3 + 2 + "s";
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 400);
+
+        function toggleMusic() {
+            const btn = document.getElementById('musicBtn');
+            if (music.paused) { music.play(); btn.innerHTML = "⏸ Pause Music"; }
+            else { music.pause(); btn.innerHTML = "🎵 Play Music"; }
+        }
+    </script>
+</body>
+</html>
