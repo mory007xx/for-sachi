@@ -23,7 +23,7 @@
             scroll-behavior: smooth;
         }
 
-        /* Heart Rain */
+        /* Falling Hearts Background */
         .heart-fall {
             position: fixed;
             top: -10%;
@@ -33,6 +33,20 @@
             animation: fall linear forwards;
         }
         @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* Sparkle Effect */
+        .sparkle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatUp 1.5s ease-out forwards;
+            z-index: 1000;
+            color: #ff4d6d;
+            font-size: 20px;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100px) scale(0); opacity: 0; }
+        }
 
         /* Part 1: Penguin Interaction */
         #part1 {
@@ -60,7 +74,7 @@
             font-size: 0.9rem;
         }
 
-        /* Part 2: The Envelope Reveal */
+        /* Part 2: The Letter and Envelope */
         #part2 {
             display: none;
             min-height: 100vh;
@@ -100,7 +114,6 @@
             border: 2px solid #a0143c;
         }
 
-        /* The Letter */
         .notebook {
             display: none;
             background-color: var(--paper-color);
@@ -131,22 +144,34 @@
             white-space: pre-wrap;
         }
 
+        /* Interactive Footer Elements */
+        #love-counter-box {
+            margin-top: 30px;
+            font-family: 'Indie Flower', cursive;
+            color: #c9184a;
+            font-size: 1.1rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px dashed #c9184a;
+        }
+
+        .dancing-penguin {
+            display: inline-block;
+            font-size: 40px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            margin: 0 10px;
+        }
+
         /* Gallery Section */
         #gallery {
             display: none;
             width: 100%;
             max-width: 900px;
             padding: 20px;
-            margin-top: 30px;
             text-align: center;
-        }
-
-        .gallery-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: white;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         .photo-grid {
@@ -163,16 +188,8 @@
             transform: rotate(-2deg);
             transition: transform 0.3s;
         }
-
         .polaroid:nth-child(even) { transform: rotate(3deg); }
-        .polaroid:hover { transform: rotate(0deg) scale(1.05); z-index: 5; }
-
-        .polaroid img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border: 1px solid #eee;
-        }
+        .polaroid img { width: 100%; height: 250px; object-fit: cover; }
 
         #music-container {
             position: fixed;
@@ -187,7 +204,7 @@
 
     </style>
 </head>
-<body>
+<body onmousemove="handleMove(event)" ontouchmove="handleMove(event)">
 
     <div id="music-container">
         <button onclick="toggleMusic()" id="musicBtn" style="border:none; background:none; cursor:pointer; font-weight: bold; color: #c9184a;">🎵 Play Music</button>
@@ -197,10 +214,11 @@
     </div>
 
     <div id="part1">
-        <h1 id="title">Happy Valentine's day, my bayot!</h1>
+        <h1 style="font-family: 'Dancing Script'; font-size: 3rem; color: #c9184a;">Happy Valentine's day, my bayot!</h1>
         <div id="penguin" class="penguin-box" onclick="petPenguin()">🐧</div>
         <p class="instruction" id="hint">Tap the bb penguin 3x ples then press heart ples.</p>
         <p class="instruction" id="hint">Important note: Please lower your volume baka mabigla ka and madamage ears mo, mwa!</p>
+
         
         <button id="heartBtn" style="display:none; background:none; border:none; cursor:pointer; font-size: 100px; color: var(--heart-color); animation: heartbeat 1.2s infinite;" onclick="openEnvelope()">❤</button>
     </div>
@@ -215,30 +233,41 @@
 
 I want to start off by telling you how much I appreciate what you've done for me, especially those days na nandito ka and making money for us to be able to do anything that includes money. I saw your efforts. The grind you do for almost 24hrs just to make me happy and have food on our tumtum for every hour because of the snacks we bought every other day. I won't forget the effort that you did for me, and I swore to myself that effort will come back to you, tripled. I also appreciate that whenever we fought that time, you'd come to me and talk to me and pinapaintindi mo talaga sakin what's wrong and how it made you feel hurt despite the struggle you have when opening up what you feel. I saw effort, and a progress to be better. Not just for me, for us, and para rin sa sarili mo.  
 
-I know we're on a break right and you're taking a step back to assess what you want, and it's okay to take your time. We've been through a lot, so much, and we got through of it together. I'm proud of us, always. Thank you for always choosing to be patient with me even though I'm the hardest person you've dealt with HAHAHA. Thank you for being with me and lighting up my day especially those times na nag aaway sila mama. It actually toned down nung nandito ka, and nag aaway sila again nung umalis ka. I hope I was able to do the same thing for you. It breaks my heart to see you're sad and going through a lot and I'm not there with you, and can't do anything. I despise the feeling of it.
+I know we're on a break right now and you're taking a step back to assess what you want, and it's okay to take your time. We've been through a lot, so much, and we got through of it together. I'm proud of us, always. Thank you for always choosing to be patient with me even though I'm the hardest person you've dealt with HAHAHA. Thank you for being with me and lighting up my day especially those times na nag aaway sila mama. It actually toned down nung nandito ka, and nag aaway sila again nung umalis ka. I hope I was able to do the same thing for you. It breaks my heart to see you're sad and going through a lot and I'm not there with you, and can't do anything. I despise the feeling of it.
 
 I'm sorry for hurting you. You're an amazing person. You deserve all the great things life has to offer, and I'm sorry for making you feel that way. Please, don't leave me :< Stay with me forever and ever na. 
 
 Remember that I'll always be here for you, otay? I'm not really a firm believer like you are, but I wish to God that you'd always possess the gentleness a sad soul ever craves, that you should be the happiest person waddling on this earth, and even if you're not, may you always find the courage to continue just like how you give purpose in me, a fellow penguin who's in the same lifetime with you. I love you always, so so much. You mean everything to me, and no matter what happens, I will always choose you. 
 
-Again, Happy Valentine's day, my love!</div>
+Again, Happy Valentine's day, my love!
+
+<div style="text-align: center; margin-top: 20px;">
+    <div class="dancing-penguin" onclick="wiggle(this)">🐧</div>
+    <div class="dancing-penguin" onclick="wiggle(this)">🐧</div>
+</div>
+
+<div id="love-counter-box">
+    Choosing you for <span id="seconds-count">0</span> seconds and counting...
+</div>
+</div>
         </div>
 
         <div id="gallery">
-            <h2 class="gallery-title">I love you, always!</h2>
+            <h2 style="font-family: 'Dancing Script'; font-size: 2.5rem; color: white;">Balikan mo na ko please. Charot no pressure T-T</h2>
             <div class="photo-grid">
                 <div class="polaroid"><img src="photo1.jpg" alt="Memory 1"></div>
                 <div class="polaroid"><img src="photo2.jpg" alt="Memory 2"></div>
                 <div class="polaroid"><img src="photo3.jpg" alt="Memory 3"></div>
             </div>
-            <p style="color:white; font-family: 'Dancing Script'; font-size: 1.5rem; margin-top: 40px;">To forever and ever with you.</p>
         </div>
     </div>
 
     <script>
         const music = document.getElementById('bgMusic');
         music.volume = 0.65;
+        let secondsOpened = 0;
 
+        // Penguin Pet Logic
         let taps = 0;
         function petPenguin() {
             taps++;
@@ -252,6 +281,7 @@ Again, Happy Valentine's day, my love!</div>
             }
         }
 
+        // Scene Transition
         function openEnvelope() {
             document.getElementById('part1').style.display = 'none';
             document.getElementById('part2').style.display = 'flex';
@@ -259,6 +289,7 @@ Again, Happy Valentine's day, my love!</div>
             music.play().catch(() => {});
         }
 
+        // Seal Breaking Logic
         function breakSeal() {
             document.getElementById('envelope').style.opacity = "0";
             setTimeout(() => {
@@ -267,20 +298,46 @@ Again, Happy Valentine's day, my love!</div>
                 document.getElementById('gallery').style.display = 'block';
                 document.getElementById('theLetter').classList.add('fade-in');
                 document.getElementById('gallery').classList.add('fade-in');
+                
+                setInterval(() => {
+                    secondsOpened++;
+                    document.getElementById('seconds-count').innerText = secondsOpened;
+                }, 1000);
             }, 500);
         }
 
+        // Heart Sparkle Logic
+        function handleMove(e) {
+            if (document.getElementById('part2').style.display === 'flex' && Math.random() > 0.92) {
+                const x = e.pageX || (e.touches ? e.touches[0].pageX : 0);
+                const y = e.pageY || (e.touches ? e.touches[0].pageY : 0);
+                const sparkle = document.createElement('div');
+                sparkle.classList.add('sparkle');
+                sparkle.innerHTML = '❤';
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 1500);
+            }
+        }
+
+        function wiggle(el) {
+            el.style.transform = "translateY(-15px) rotate(20deg)";
+            setTimeout(() => el.style.transform = "translateY(0) rotate(0deg)", 250);
+        }
+
+        // Falling Hearts Rain
         function createHeart() {
             const heart = document.createElement('div');
             heart.classList.add('heart-fall');
             heart.innerHTML = '❤';
             heart.style.left = Math.random() * 100 + "vw";
             heart.style.animationDuration = Math.random() * 3 + 2 + "s";
-            heart.style.opacity = Math.random();
+            heart.style.opacity = Math.random() * 0.5 + 0.5;
             document.body.appendChild(heart);
             setTimeout(() => heart.remove(), 5000);
         }
-        setInterval(createHeart, 400);
+        setInterval(createHeart, 450);
 
         function toggleMusic() {
             const btn = document.getElementById('musicBtn');
